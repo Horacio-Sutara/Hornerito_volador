@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
-
+#hola
 pygame.init()
-
+print("hola")
 ancho_pantalla = 664
 largo_pantalla = 736
 
