@@ -33,7 +33,7 @@ class Hornerito(pygame.sprite.Sprite):
 
         #esta parte es para actualizar el sprite
 
-        def update(self):
+    def update(self):
             self.contador+=1
             cooldown= 4
             if self.contador > cooldown:
