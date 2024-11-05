@@ -1,6 +1,9 @@
 import pygame
 from pygame.locals import *
 
+reloj = pygame.time.Clock()
+fps = 60
+
 pygame.init()
 print("hola")
 ancho_pantalla = 664
@@ -15,6 +18,8 @@ run = True
 bg = pygame.image.load('bg.png')
 
 while run: #ciclo de ejecucion del juego
+    reloj.tick(fps)
+    
     pantalla.blit(bg, (0,0)) #cargamos el fondo
 
     for event in pygame.event.get():
