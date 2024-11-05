@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
-
+#hola
 pygame.init()
-
+print("hola")
 ancho_pantalla = 664
 largo_pantalla = 736
 
@@ -22,5 +22,11 @@ while run: #ciclo de ejecucion del juego
             run = False
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
+
+
+#hola
+
+
+
 
 pygame.quit()
