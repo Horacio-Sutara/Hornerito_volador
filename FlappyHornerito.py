@@ -10,7 +10,7 @@ pantalla = pygame.display.set_mode((ancho_pantalla, largo_pantalla)) #creamos la
 pygame.display.set_caption('Flappy Hornerito')
 
 run = True
-#owo
+
 #Imagenes cargadas
 bg = pygame.image.load('bg.png')
 
@@ -22,11 +22,5 @@ while run: #ciclo de ejecucion del juego
             run = False
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
-
-
-#hola
-
-
-
 
 pygame.quit()
