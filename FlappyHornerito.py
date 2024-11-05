@@ -23,4 +23,10 @@ while run: #ciclo de ejecucion del juego
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
 
+
+#hola
+
+
+
+
 pygame.quit()
