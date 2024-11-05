@@ -1,6 +1,9 @@
 import pygame
 from pygame.locals import *
 
+reloj = pygame.time.Clock()
+fps = 60
+
 pygame.init()
 
 ancho_pantalla = 664
@@ -47,6 +50,8 @@ Hornerito_grupo.add(flappy)
 pygame.quit()
 
 while run: #ciclo de ejecucion del juego
+    reloj.tick(fps)
+    
     pantalla.blit(bg, (0,0)) #cargamos el fondo
 
     Hornerito_grupo.draw(pantalla)
