@@ -1,15 +1,13 @@
 import pygame
+import Constantes as const
 from pygame.locals import *
 
 reloj = pygame.time.Clock()
-fps = 60
 
 pygame.init()
 
-ancho_pantalla = 640
-largo_pantalla = 640
 
-pantalla = pygame.display.set_mode((ancho_pantalla, largo_pantalla)) #creamos la pantalla
+pantalla = pygame.display.set_mode((const.ancho_pantalla, const.largo_pantalla)) #creamos la pantalla
 pygame.display.set_caption('Flappy Hornerito')
 
 run = True
@@ -47,12 +45,12 @@ class Hornerito(pygame.sprite.Sprite):
 
 
 Hornerito_grupo = pygame.sprite.Group()
-flappy= Hornerito (100,int(largo_pantalla/2))
+flappy= Hornerito (100,int(const.largo_pantalla/2))
 Hornerito_grupo.add(flappy)
 
 
 while run: #ciclo de ejecucion del juego
-    reloj.tick(fps)
+    reloj.tick(const.fps)
     
     pantalla.blit(bg, (0,0)) #cargamos el fondo
 
