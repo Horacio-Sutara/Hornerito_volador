@@ -6,8 +6,8 @@ fps = 60
 
 pygame.init()
 
-ancho_pantalla = 664
-largo_pantalla = 736
+ancho_pantalla = 640
+largo_pantalla = 640
 
 pantalla = pygame.display.set_mode((ancho_pantalla, largo_pantalla)) #creamos la pantalla
 pygame.display.set_caption('Flappy Hornerito')
@@ -26,7 +26,7 @@ class Hornerito(pygame.sprite.Sprite):
         self.imagenes= [ ]
         self.indice =0
         self.contador =0
-        for auxiliar in range (1,4):
+        for auxiliar in range (1,5):
             img = pygame.image.load(f"horneritoSprite{auxiliar}.png")
             self.imagenes.append(img)
         self.image= self.imagenes[self.indice]
@@ -37,7 +37,7 @@ class Hornerito(pygame.sprite.Sprite):
 
         def update(self):
             self.contador+=1
-            cooldown= 3
+            cooldown= 4
             if self.contador > cooldown:
                 self.contador=0
                 self.indice+=1
