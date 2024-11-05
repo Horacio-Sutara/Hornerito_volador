@@ -22,5 +22,5 @@ while run: #ciclo de ejecucion del juego
             run = False
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
-
+#escoliosis
 pygame.quit()
