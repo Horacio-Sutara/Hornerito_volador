@@ -25,6 +25,8 @@ class Hornerito(pygame.sprite.Sprite):
         self.pos_x=x
         self.pos_y=y
 
+        self.velocidad=0
+
         pygame.sprite.Sprite. __init__ (self)
         self.imagenes= [ ]
         self.indice =0
@@ -48,18 +50,29 @@ class Hornerito(pygame.sprite.Sprite):
                     self.indice= 0
             self.image=self.imagenes[self.indice]
     
+    def mover_arriba(self,velocidad=const.Velocidad_personaje):
+        self.velocidad=velocidad
+        self.pos_y-=velocidad
+        if const.Alto_personaje/2>self.pos_y:
+            self.pos_y=const.Alto_personaje/2
+        self.rect.center=(self.pos_x,self.pos_y)
 
     def mover_abajo(self,velocidad=const.Velocidad_personaje):
         self.pos_y+=velocidad
-        if self.alto_ventana<self.pos_y+const.Alto_personaje/2:
-            self.pos_y=self.alto_ventana-const.Alto_personaje/2
-        self.rect.center=[self.pos_x,self.pos_y]
+        if self.alto_ventana<self.pos_y:
+            self.pos_y=self.alto_ventana-1
+            self.velocidad=0
+        elif const.Alto_personaje/2>self.pos_y:
+            self.pos_y=const.Alto_personaje/2+1
+            self.velocidad=0
+        self.rect.center=(self.pos_x,self.pos_y)
 
     def caer(self):
-        self.mover_abajo(3)
+        self.velocidad+=0.2
+        self.mover_abajo(self.velocidad)
 
 Hornerito_grupo = pygame.sprite.Group()
-flappy= Hornerito (100,int(const.largo_pantalla/2),pantalla)
+flappy= Hornerito (200,int(const.largo_pantalla/2),pantalla)
 Hornerito_grupo.add(flappy)
 
 
@@ -75,6 +88,11 @@ while run: #ciclo de ejecucion del juego
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
+        if event.type==pygame.KEYDOWN:
+            
+            if event.key == pygame.K_w:
+                flappy.mover_arriba()
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
 
