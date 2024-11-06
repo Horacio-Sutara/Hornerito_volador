@@ -1,7 +1,7 @@
 import pygame
 import Constantes as const
 class Hornerito(pygame.sprite.Sprite):
-    def __init__(self, x, y,interfaz):
+    def __init__(self, x, y,interfaz,imagen_pj):
         self.ventana=interfaz # asigna ventana a la que pertenece
         self.largo_ventana,self.alto_ventana=interfaz.get_size() #dimensiones de la ventana
         self.pos_x=x #posicion de inicio en x
@@ -13,7 +13,7 @@ class Hornerito(pygame.sprite.Sprite):
         self.indice =0
         self.contador =0
 
-        self.image= const.imagenes_Hornero[self.indice]
+        self.image= imagen_pj[self.indice]
         self.rect= self.image.get_rect ()
         self.rect.center =[x, y]
 
@@ -28,6 +28,14 @@ class Hornerito(pygame.sprite.Sprite):
                     self.indice= 0
             self.image=const.imagenes_Hornero[self.indice]
     
+    def mover_izquierda(self,velocidad=const.Velocidad_personaje):
+        self.pos_x+=velocidad/2
+
+        if const.Ancho_personaje/2>self.pos_x:
+            self.pos_x=self.largo_ventana-const.Ancho_personaje/2
+
+        self.rect.center=(self.pos_x,self.pos_y)
+
     def mover_arriba(self,velocidad=const.Velocidad_personaje): # funcion del salto del pajaro
         if self.velocidad<0:
             velocidad=-5
