@@ -26,7 +26,7 @@ muro_inferior=pj.Hornerito(const.largo_pantalla-10, const.ancho_pantalla-120,pan
 obstaculos = pygame.sprite.Group()
 obstaculos.add(muro_superior)
 obstaculos.add(muro_inferior)
-
+band=False
 while run: #ciclo de ejecucion del juego
     reloj.tick(const.fps)
     
@@ -35,8 +35,9 @@ while run: #ciclo de ejecucion del juego
     Hornerito_grupo.draw(pantalla)#dibuja al pj en la pantalla
     Hornerito_grupo.update()# cambia el sprite
     flappy.caer()# actua la gravedad en el pj
-    muro_superior.mover_izquierda()
-    muro_inferior.mover_izquierda()
+    if band==False:
+        muro_superior.mover_izquierda()
+        muro_inferior.mover_izquierda()
     obstaculos.draw(pantalla)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:# comando para cerrar la pantalla
@@ -44,8 +45,11 @@ while run: #ciclo de ejecucion del juego
 
         if event.type==pygame.KEYDOWN:# detecta la presion del teclado
             
-            if event.key == pygame.K_w or event.key == pygame.K_SPACE:#detecta w o space
+            if (event.key == pygame.K_w or event.key == pygame.K_SPACE) and band==False:#detecta w o space
                 flappy.mover_arriba()# activa el salto
+    if pygame.sprite.spritecollide(flappy, obstaculos, False):
+        print("¡Colisión detectada con el obstáculo!")
+        band=True
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
 
