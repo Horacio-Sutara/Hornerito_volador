@@ -47,8 +47,8 @@ class Hornerito(pygame.sprite.Sprite):
 
     def mover_abajo(self,velocidad=const.Velocidad_personaje):# funcion de mover hacia abajo
         self.pos_y+=velocidad #traslacion hacia abajo
-        if self.alto_ventana<self.pos_y-4:# limita borde inferior
-            self.pos_y=self.alto_ventana-7
+        if self.alto_ventana-30<self.pos_y:# limita borde inferior
+            self.pos_y=self.alto_ventana-30
             self.velocidad=0
             
         elif const.Alto_personaje/2>self.pos_y:# limita borde superior 

@@ -1,6 +1,7 @@
 import pygame
 import Constantes as const
 import Personaje as pj
+import Sonido
 from pygame.locals import *
 
 #limitador de fps (si se cambia se debe ajustar los parametros de velocidad y gravedad)
@@ -27,6 +28,10 @@ obstaculos = pygame.sprite.Group()
 obstaculos.add(muro_superior)
 obstaculos.add(muro_inferior)
 band=False
+
+#crear clase sonido puntaje
+puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
+
 while run: #ciclo de ejecucion del juego
     reloj.tick(const.fps)
     
@@ -47,8 +52,11 @@ while run: #ciclo de ejecucion del juego
             
             if (event.key == pygame.K_w or event.key == pygame.K_SPACE) and band==False:#detecta w o space
                 flappy.mover_arriba()# activa el salto
+    if muro_inferior.pos_x<const.Posicion_x-const.Ancho_personaje:
+        puntaje_sonido.reproducir()
+
     if pygame.sprite.spritecollide(flappy, obstaculos, False):
-        print("¡Colisión detectada con el obstáculo!")
+        print("¡Colisión detectada con el obstáculo! ", flappy.pos_x," ",muro_inferior.pos_x)
         band=True
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
