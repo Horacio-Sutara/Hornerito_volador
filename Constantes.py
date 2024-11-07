@@ -31,6 +31,8 @@ jugar_imagen="boton-jugar.png"
 jugar_imagen_ampliacion="boton-jugar1.png"
 
 salir_imagen="boton-salir.png"
+salir_imagen_ampliacion="boton-salir1.png"
+
 fondo_imagen='bg.png'
 imagen_arbol_alto_superior=[pygame.image.load("alto-arriba.png")]
 imagen_arbol_medio_superior=[pygame.image.load("medio-arriba.png")]

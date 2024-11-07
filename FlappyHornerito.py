@@ -49,7 +49,13 @@ imagen_boton_normal = pygame.image.load(const.jugar_imagen).convert_alpha()
 imagen_boton_hover = pygame.image.load(const.jugar_imagen_ampliacion).convert_alpha()
 boton_inicio= obj.Boton(240, 100, imagen_boton_normal, imagen_boton_hover)
 
+#cerrar
+imagen_boton_normal= pygame.image.load(const.salir_imagen).convert_alpha()
+imagen_boton_hover= pygame.image.load(const.salir_imagen_ampliacion).convert_alpha()
+boton_salir=obj.Boton(250, 350, imagen_boton_normal, imagen_boton_hover)
+
 inicio=True
+run=const.run
 while inicio:
     
     pantalla.blit(fondo, (0,0))
@@ -62,14 +68,16 @@ while inicio:
         if boton_inicio.es_click(evento):
             print("click")
             inicio=False
-        
-
+        if boton_salir.es_click(evento):
+            inicio=False
+            run=False
+    boton_salir.dibujar(pantalla)
     boton_inicio.dibujar(pantalla)
     
 
     pygame.display.update()
 
-while const.run: #ciclo de ejecucion del juego
+while run: #ciclo de ejecucion del juego
     fondo_sonido.reproducir()
 
     reloj.tick(const.fps)
@@ -93,6 +101,8 @@ while const.run: #ciclo de ejecucion del juego
     for event in pygame.event.get():
         if event.type == pygame.QUIT:# comando para cerrar la pantalla
             const.run = False
+            pygame.quit()
+            sys.exit()
 
         if event.type==pygame.KEYDOWN:# detecta la presion del teclado
             
