@@ -8,7 +8,7 @@ Color_personaje=(23,255,0)
 Velocidad_personaje=-8
 Posicion_x=200
 Posicion_y=int(largo_pantalla/2)
-run = False
+run = True
 
 
 gravedad=0.2
@@ -27,6 +27,10 @@ puntaje_sonido="puntaje.wav"
 fondo_sonido="fondo.wav"
 
 # imagenes (sprites)
+jugar_imagen="boton-jugar.png"
+jugar_imagen_ampliacion="boton-jugar1.png"
+
+salir_imagen="boton-salir.png"
 fondo_imagen='bg.png'
 imagen_arbol_alto_superior=[pygame.image.load("alto-arriba.png")]
 imagen_arbol_medio_superior=[pygame.image.load("medio-arriba.png")]

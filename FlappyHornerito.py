@@ -8,6 +8,7 @@ import sys
 
 from Personaje import Personaje 
 from Personaje import Arboles
+
 #limitador de fps (si se cambia se debe ajustar los parametros de velocidad y gravedad)
 reloj = pygame.time.Clock()
 
@@ -44,9 +45,12 @@ puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 caer=True
 
 #Menu
-boton_inicio = obj.Boton(const.ancho_pantalla/2-100, const.largo_pantalla/200 + 100, 200, 50, const.AZUL, 'Jugar')
+imagen_boton_normal = pygame.image.load(const.jugar_imagen).convert_alpha()
+imagen_boton_hover = pygame.image.load(const.jugar_imagen_ampliacion).convert_alpha()
+boton_inicio= obj.Boton(240, 100, imagen_boton_normal, imagen_boton_hover)
 
-while not const.run:
+inicio=True
+while inicio:
     
     pantalla.blit(fondo, (0,0))
 
@@ -55,7 +59,9 @@ while not const.run:
             pygame.quit()
             sys.exit()
 
-        boton_inicio.manejar_evento(evento)
+        if boton_inicio.es_click(evento):
+            print("click")
+            inicio=False
         
 
     boton_inicio.dibujar(pantalla)

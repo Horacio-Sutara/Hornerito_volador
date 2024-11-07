@@ -92,32 +92,41 @@ class Mostrar_Personaje():
     
     def actualizar_sprite(self):
         self.personaje.update()# cambia el sprite
-
 class Boton:
-    def __init__(self, x, y, ancho, alto, color, texto='', color_texto=const.BLANCO):
-        self.rect = pygame.Rect(x, y, ancho, alto)
-        self.color = color
-        self.texto = texto
-        self.color_texto = color_texto
-        self.color_original = color
-    def dibujar(self, pantalla):
-        pygame.draw.rect(pantalla, self.color, self.rect)
-        if self.texto != '':
-            fuente = pygame.font.Font(None, 36)
-            texto_superficie = fuente.render(self.texto, False, self.color_texto)
-            texto_rect = texto_superficie.get_rect(center=self.rect.center)
-            pantalla.blit(texto_superficie, texto_rect)
-    def esta_sobre(self, pos_mouse):
-        return self.rect.collidepoint(pos_mouse)
-    
-    def manejar_evento(self, evento):
-        # Cambia el color si el mouse pasa por encima
-        if self.esta_sobre(pygame.mouse.get_pos()):
-            self.color = const.AZUL_CLARO
-            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-                print("Boton presionado")
-                const.run = True
+    def __init__(self, x, y, imagen_normal, imagen_hover):
+        # Carga las imágenes para el estado normal y el estado "hover"
+        self.pos_x_normal=x
+        self.pos_y_normal=y
+        self.imagen_normal = imagen_normal
+        self.imagen_hover = imagen_hover
+        self.imagen_actual = self.imagen_normal  # Imagen que se muestra actualmente
+        self.rect = self.imagen_normal.get_rect()
+        self.rect.topleft = (x, y)
+        self.click = False  # Para verificar si se ha hecho clic
+
+    def dibujar(self, ventana):
+        # Cambia la imagen actual según la posición del mouse
+        pos_mouse = pygame.mouse.get_pos()
+        if self.rect.collidepoint(pos_mouse):
+            self.imagen_actual = self.imagen_hover
+            self.rect.topleft = (self.pos_x_normal-5, self.pos_y_normal)
         else:
-            self.color = self.color_original
+            self.imagen_actual = self.imagen_normal
+            self.rect.topleft = (self.pos_x_normal, self.pos_y_normal)
+
+        # Dibuja la imagen actual en la ventana
+        ventana.blit(self.imagen_actual, (self.rect.x, self.rect.y))
+
+    def es_click(self, evento):
+        # Comprueba si el botón ha sido clickeado
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(evento.pos):
+                self.click = True  # Registra el clic
+
+        if evento.type == pygame.MOUSEBUTTONUP:
+            if self.click and self.rect.collidepoint(evento.pos):
+                self.click = False
+                return True  # Retorna True si se ha hecho clic correctamente
+        return False
 
 
