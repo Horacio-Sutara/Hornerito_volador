@@ -32,7 +32,7 @@ class Hornerito(pygame.sprite.Sprite):
         self.pos_x+=velocidad/2
 
         if -const.Ancho_personaje*2>self.pos_x:
-            self.pos_x=self.largo_ventana-const.Ancho_personaje/2
+            self.pos_x=self.largo_ventana+100
 
         self.rect.center=(self.pos_x,self.pos_y)
 

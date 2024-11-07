@@ -15,8 +15,11 @@ cooldown= 4
 
 
 
-
+# sonido
 puntaje_sonido="puntaje.wav"
+fondo_sonido="fondo.wav"
+
+# imagenes (sprites)
 fondo_imagen='bg.png'
 imagen_arbol_alto_superior=[pygame.image.load("alto-arriba.png")]
 imagen_arbol_medio_superior=[pygame.image.load("medio-arriba.png")]

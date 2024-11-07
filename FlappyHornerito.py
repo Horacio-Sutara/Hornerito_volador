@@ -16,8 +16,12 @@ pygame.display.set_caption('Flappy Hornerito')
 
 run = True
 
-#Imagen de fondo
-bg = pygame.image.load(const.fondo_imagen)
+
+# fondo
+fondo = pygame.image.load(const.fondo_imagen)
+fondo_sonido=Sonido.Sonido(const.fondo_sonido)
+fondo_sonido.reproducir()
+
 
 #Crear personaje
 Hornerito_grupo = pygame.sprite.Group()#Maneja los sprte del pj
@@ -30,14 +34,18 @@ obstaculos.add(muro_superior)
 obstaculos.add(muro_inferior)
 band=False
 
+
+
 #crear clase puntaje
 puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
 puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 
 while run: #ciclo de ejecucion del juego
+    fondo_sonido.reproducir()
+
     reloj.tick(const.fps)
     
-    pantalla.blit(bg, (0,0)) #cargamos el fondo
+    pantalla.blit(fondo, (0,0)) #cargamos el fondo
 
 
     Hornerito_grupo.draw(pantalla)#dibuja al pj en la pantalla
