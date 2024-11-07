@@ -2,6 +2,7 @@ import pygame
 import Constantes as const
 import Personaje as pj
 import Sonido
+import Puntaje
 from pygame.locals import *
 
 #limitador de fps (si se cambia se debe ajustar los parametros de velocidad y gravedad)
@@ -29,13 +30,15 @@ obstaculos.add(muro_superior)
 obstaculos.add(muro_inferior)
 band=False
 
-#crear clase sonido puntaje
+#crear clase puntaje
 puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
+puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 
 while run: #ciclo de ejecucion del juego
     reloj.tick(const.fps)
     
     pantalla.blit(bg, (0,0)) #cargamos el fondo
+
 
     Hornerito_grupo.draw(pantalla)#dibuja al pj en la pantalla
     Hornerito_grupo.update()# cambia el sprite
@@ -44,6 +47,9 @@ while run: #ciclo de ejecucion del juego
         muro_superior.mover_izquierda()
         muro_inferior.mover_izquierda()
     obstaculos.draw(pantalla)
+
+    puntaje.dibujar(pantalla)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:# comando para cerrar la pantalla
             run = False
@@ -52,8 +58,11 @@ while run: #ciclo de ejecucion del juego
             
             if (event.key == pygame.K_w or event.key == pygame.K_SPACE) and band==False:#detecta w o space
                 flappy.mover_arriba()# activa el salto
-    if muro_inferior.pos_x<const.Posicion_x-const.Ancho_personaje:
+
+    if (const.Posicion_x-const.Ancho_personaje/2-5<muro_inferior.pos_x+const.Ancho_personaje<const.Posicion_x-const.Ancho_personaje/2):
         puntaje_sonido.reproducir()
+        puntaje.aumentar()
+
 
     if pygame.sprite.spritecollide(flappy, obstaculos, False):
         print("¡Colisión detectada con el obstáculo! ", flappy.pos_x," ",muro_inferior.pos_x)
