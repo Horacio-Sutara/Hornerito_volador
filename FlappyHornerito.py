@@ -1,10 +1,9 @@
 import pygame
 import Constantes as const
-import Personaje as pj
 import Sonido
 import Puntaje
-from pygame.locals import *
-
+from Personaje import Personaje 
+from Personaje import Arboles
 #limitador de fps (si se cambia se debe ajustar los parametros de velocidad y gravedad)
 reloj = pygame.time.Clock()
 
@@ -24,14 +23,13 @@ fondo_sonido.reproducir()
 
 
 #Crear personaje
-Hornerito_grupo = pygame.sprite.Group()#Maneja los sprte del pj
-flappy= pj.Hornerito (const.Posicion_x,const.Posicion_y,pantalla,imagen_pj=const.imagenes_Hornero) #crea al pj
-Hornerito_grupo.add(flappy)# asigna los sprites al pj
-muro_superior=pj.Hornerito(const.largo_pantalla-10, 120,pantalla,const.imagen_arbol_alto_superior)
-muro_inferior=pj.Hornerito(const.largo_pantalla-10, const.ancho_pantalla-120,pantalla,const.imagen_arbol_alto_inferior)
-obstaculos = pygame.sprite.Group()
-obstaculos.add(muro_superior)
-obstaculos.add(muro_inferior)
+
+flappy= Personaje(const.Posicion_x,const.Posicion_y,pantalla,const.imagenes_Hornero,const.Velocidad_personaje,const.Velocidad_personaje,const.gravedad)
+
+
+bloque=Arboles([const.largo_pantalla-10,const.largo_pantalla-10],[120,const.ancho_pantalla-120],pantalla,
+               [const.imagen_arbol_alto_superior,const.imagen_arbol_alto_inferior],const.Velocidad_personaje/2,2)
+
 band=False
 
 
@@ -39,6 +37,8 @@ band=False
 #crear clase puntaje
 puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
 puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
+
+caer=True
 
 while run: #ciclo de ejecucion del juego
     fondo_sonido.reproducir()
@@ -48,13 +48,16 @@ while run: #ciclo de ejecucion del juego
     pantalla.blit(fondo, (0,0)) #cargamos el fondo
 
 
-    Hornerito_grupo.draw(pantalla)#dibuja al pj en la pantalla
-    Hornerito_grupo.update()# cambia el sprite
-    flappy.caer()# actua la gravedad en el pj
+    flappy.dibujar()#dibuja al pj en la pantalla
+    flappy.actualizar_sprite()# cambia el sprite
+    if caer:
+        flappy.caer()# actua la gravedad en el pj
+
     if band==False:
-        muro_superior.mover_izquierda()
-        muro_inferior.mover_izquierda()
-    obstaculos.draw(pantalla)
+        bloque.desplazar(0)
+        bloque.desplazar(1)
+    
+    bloque.dibujar()
 
     puntaje.dibujar(pantalla)
 
@@ -65,15 +68,22 @@ while run: #ciclo de ejecucion del juego
         if event.type==pygame.KEYDOWN:# detecta la presion del teclado
             
             if (event.key == pygame.K_w or event.key == pygame.K_SPACE) and band==False:#detecta w o space
-                flappy.mover_arriba()# activa el salto
+                flappy.salto()# activa el salto
 
-    if (const.Posicion_x-const.Ancho_personaje/2-5<muro_inferior.pos_x+const.Ancho_personaje<const.Posicion_x-const.Ancho_personaje/2):
+    if (const.Posicion_x-const.Ancho_personaje/2-5<bloque.lista_obstaculos[1].pos_x+100<const.Posicion_x-const.Ancho_personaje/2):
         puntaje_sonido.reproducir()
         puntaje.aumentar()
 
 
-    if pygame.sprite.spritecollide(flappy, obstaculos, False):
-        print("¡Colisión detectada con el obstáculo! ", flappy.pos_x," ",muro_inferior.pos_x)
+    if pygame.sprite.spritecollide(flappy.movimientos, bloque.personaje, False):
+        print("¡Colisión detectada con el obstáculo! ", flappy.movimientos.pos_x," ",bloque.lista_obstaculos[1].pos_x)
+        if flappy.movimientos.rect.colliderect(bloque.lista_obstaculos[1]):
+            if (bloque.lista_obstaculos[1].pos_x<302):
+                flappy.movimientos.aceleracion=0
+                caer=False
+                flappy.movimientos.mover_arriba()
+
+                print("moviendo")
         band=True
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
