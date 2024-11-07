@@ -8,11 +8,18 @@ Color_personaje=(23,255,0)
 Velocidad_personaje=-8
 Posicion_x=200
 Posicion_y=int(largo_pantalla/2)
+run = False
 
 
 gravedad=0.2
 cooldown= 4
 
+#Colores
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+AZUL = (0, 0, 255)
+AZUL_CLARO = (100, 149, 237)
+ROJO = (255,0,0)
 
 
 # sonido

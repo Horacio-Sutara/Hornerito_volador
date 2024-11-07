@@ -93,4 +93,31 @@ class Mostrar_Personaje():
     def actualizar_sprite(self):
         self.personaje.update()# cambia el sprite
 
+class Boton:
+    def __init__(self, x, y, ancho, alto, color, texto='', color_texto=const.BLANCO):
+        self.rect = pygame.Rect(x, y, ancho, alto)
+        self.color = color
+        self.texto = texto
+        self.color_texto = color_texto
+        self.color_original = color
+    def dibujar(self, pantalla):
+        pygame.draw.rect(pantalla, self.color, self.rect)
+        if self.texto != '':
+            fuente = pygame.font.Font(None, 36)
+            texto_superficie = fuente.render(self.texto, False, self.color_texto)
+            texto_rect = texto_superficie.get_rect(center=self.rect.center)
+            pantalla.blit(texto_superficie, texto_rect)
+    def esta_sobre(self, pos_mouse):
+        return self.rect.collidepoint(pos_mouse)
+    
+    def manejar_evento(self, evento):
+        # Cambia el color si el mouse pasa por encima
+        if self.esta_sobre(pygame.mouse.get_pos()):
+            self.color = const.AZUL_CLARO
+            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                print("Boton presionado")
+                const.run = True
+        else:
+            self.color = self.color_original
+
 

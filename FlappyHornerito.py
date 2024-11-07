@@ -2,6 +2,10 @@ import pygame
 import Constantes as const
 import Sonido
 import Puntaje
+import Objeto as obj
+
+import sys
+
 from Personaje import Personaje 
 from Personaje import Arboles
 #limitador de fps (si se cambia se debe ajustar los parametros de velocidad y gravedad)
@@ -13,7 +17,6 @@ pygame.init()
 pantalla = pygame.display.set_mode((const.ancho_pantalla, const.largo_pantalla)) #creamos la pantalla
 pygame.display.set_caption('Flappy Hornerito')
 
-run = True
 
 
 # fondo
@@ -40,7 +43,27 @@ puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 
 caer=True
 
-while run: #ciclo de ejecucion del juego
+#Menu
+boton_inicio = obj.Boton(const.ancho_pantalla/2-100, const.largo_pantalla/200 + 100, 200, 50, const.AZUL, 'Jugar')
+
+while not const.run:
+    
+    pantalla.blit(fondo, (0,0))
+
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        boton_inicio.manejar_evento(evento)
+        
+
+    boton_inicio.dibujar(pantalla)
+    
+
+    pygame.display.update()
+
+while const.run: #ciclo de ejecucion del juego
     fondo_sonido.reproducir()
 
     reloj.tick(const.fps)
@@ -63,7 +86,7 @@ while run: #ciclo de ejecucion del juego
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:# comando para cerrar la pantalla
-            run = False
+            const.run = False
 
         if event.type==pygame.KEYDOWN:# detecta la presion del teclado
             
