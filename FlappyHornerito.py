@@ -3,7 +3,7 @@ import Constantes as const
 import Sonido
 import Puntaje
 import Objeto as obj
-
+import random
 import sys
 
 from Personaje import Personaje 
@@ -54,8 +54,11 @@ class Juego():
         self.reloj = pygame.time.Clock()
         self.fondo_sonido=Sonido.Sonido(fondo_sonido)
         self.flappy= Personaje(const.Posicion_x,const.Posicion_y,self.pantalla,const.imagenes_Hornero,const.Velocidad_personaje,const.Velocidad_personaje,const.gravedad)
-        self.bloque=Arboles([const.largo_pantalla-10,const.largo_pantalla-10],[120,const.ancho_pantalla-120],self.pantalla,
-                    [const.imagen_arbol_alto_superior,const.imagen_arbol_alto_inferior],const.Velocidad_personaje/2,2)
+        self.bloque=Arboles(
+            [const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10],
+            [150,120,90,60,const.ancho_pantalla-150,const.ancho_pantalla-120,const.ancho_pantalla-90,const.ancho_pantalla-60],self.pantalla,
+            [const.imagen_arbol_super_superior,const.imagen_arbol_alto_superior,const.imagen_arbol_medio_superior,const.imagen_arbol_bajo_superior,const.imagen_arbol_super_inferior,const.imagen_arbol_alto_inferior,const.imagen_arbol_medio_inferior,const.imagen_arbol_bajo_inferior],
+            const.Velocidad_personaje/2,8)
         self.band=False        
         self.fondo_sonido.reproducir()
 
@@ -69,6 +72,10 @@ class Juego():
         self.activar_menu=False
         self.cerrar=False
 
+        self.numero_aleatorio_muro_superior = 0
+        self.numero_aleatorio_muro_inferior = 6
+        self.no_muro_superior=False
+        self.no_muro_inferior=False
 
 
     def menu(self, pantalla):
@@ -79,14 +86,30 @@ class Juego():
         self.game= menu.ejecutar
         self.cerrar=menu.salir
 
+    def generar_numero(self):
+        self.no_muro_superior=False
+        self.no_muro_inferior=False
+        self.numero_aleatorio_muro_superior=random.randint(0, 3)
+
+        if self.numero_aleatorio_muro_superior==0:
+            self.numero_aleatorio_muro_inferior=random.randint(6, 7)
+        elif self.numero_aleatorio_muro_superior==1:
+            self.numero_aleatorio_muro_inferior=random.randint(5, 7)
+        else:
+            self.numero_aleatorio_muro_inferior=random.randint(4, 7)
+
+            
     def jugar(self):
-        
+        self.generar_numero()
         self.band=False
         self.bloque.reestablecer_posicion()
         self.caer=True
         self.puntaje.resetear()
         self.flappy.reestablecer()
         self.flappy.movimientos.aceleracion=0
+        self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
+        self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
+
         while self.game:
             self.fondo_sonido.reproducir()
             self.reloj.tick(const.fps)
@@ -98,8 +121,13 @@ class Juego():
             if self.caer:
                 self.flappy.caer()
             if self.band==False:
-                self.bloque.desplazar(0)
-                self.bloque.desplazar(1)
+                self.bloque.desplazar(self.numero_aleatorio_muro_inferior)
+                if self.bloque.desplazar(self.numero_aleatorio_muro_superior):
+                    self.bloque.desactivar_obstaculo(self.numero_aleatorio_muro_superior)
+                    self.bloque.desactivar_obstaculo(self.numero_aleatorio_muro_inferior)
+                    self.generar_numero()
+                    self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
+                    self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
             self.bloque.dibujar()
             self.puntaje.dibujar(self.pantalla)
             
@@ -114,33 +142,33 @@ class Juego():
                     if (event.key==pygame.K_w or event.key==pygame.K_SPACE) and self.band==False:
                         self.flappy.salto()
             
-            if (const.Posicion_x-const.Ancho_personaje/2-5<self.bloque.lista_obstaculos[1].pos_x+100<const.Posicion_x-const.Ancho_personaje/2):
+            if (const.Posicion_x-const.Ancho_personaje/2-5<self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x+100<const.Posicion_x-const.Ancho_personaje/2):
                 self.puntaje_sonido.reproducir()
                 self.puntaje.aumentar()
                 self.puntaje_sonido.reproducir()
 
             if pygame.sprite.spritecollide(self.flappy.movimientos, self.bloque.personaje, False):
-                print("¡Colisión detectada con el obstáculo! ", self.flappy.movimientos.pos_x," ",self.bloque.lista_obstaculos[1].pos_x)
+                print("¡Colisión detectada con el obstáculo! ", self.flappy.movimientos.pos_x," ",self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x)
                 self.tiempo_colision=pygame.time.get_ticks()
                 self.flappy.movimientos.aceleracion=0
-                if self.flappy.movimientos.rect.colliderect(self.bloque.lista_obstaculos[1]):
-                    if (self.bloque.lista_obstaculos[1].pos_x<291):
+                if self.flappy.movimientos.rect.colliderect(self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior]):
+                    if (self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x<291):
                         self.caer=False
                         self.flappy.mover_arriba()
 
                         print("moviendo")
-                    elif self.bloque.lista_obstaculos[1].pos_x>=291:
+                    elif self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x>=291:
                         self.flappy.mover_izquierda()
                         print("desplazar")
 
-                if self.flappy.movimientos.rect.colliderect(self.bloque.lista_obstaculos[0]):
-                    if self.bloque.lista_obstaculos[0].pos_x>=291:
+                if self.flappy.movimientos.rect.colliderect(self.bloque.lista_obstaculos[self.numero_aleatorio_muro_superior]):
+                    if self.bloque.lista_obstaculos[self.numero_aleatorio_muro_superior].pos_x>=291:
                         self.flappy.mover_izquierda()
                         print("desplazar")
                 self.band=True
             if self.tiempo_colision:
                 self.tiempo_actual = pygame.time.get_ticks()
-
+                # Si han pasado 5 segundos (5000 ms) desde la colisión
                 if self.tiempo_actual - self.tiempo_colision >= 1000:
                     self.game=False
                     self.tiempo_colision = None  # Resetea el tiempo de colisión
