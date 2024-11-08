@@ -56,6 +56,10 @@ boton_salir=obj.Boton(250, 350, imagen_boton_normal, imagen_boton_hover)
 
 inicio=True
 run=const.run
+
+#tiempo de espera antes de mostrar reintentar
+tiempo_colision=None
+
 while inicio:
     
     pantalla.blit(fondo, (0,0))
@@ -116,14 +120,31 @@ while run: #ciclo de ejecucion del juego
 
     if pygame.sprite.spritecollide(flappy.movimientos, bloque.personaje, False):
         print("¡Colisión detectada con el obstáculo! ", flappy.movimientos.pos_x," ",bloque.lista_obstaculos[1].pos_x)
+        tiempo_colision=pygame.time.get_ticks()
+        flappy.movimientos.aceleracion=0
         if flappy.movimientos.rect.colliderect(bloque.lista_obstaculos[1]):
             if (bloque.lista_obstaculos[1].pos_x<302):
-                flappy.movimientos.aceleracion=0
                 caer=False
-                flappy.movimientos.mover_arriba()
+                flappy.mover_arriba()
 
                 print("moviendo")
+            elif bloque.lista_obstaculos[1].pos_x>=302:
+                flappy.mover_izquierda()
+                print("desplazar")
+
+        if flappy.movimientos.rect.colliderect(bloque.lista_obstaculos[0]):
+            if bloque.lista_obstaculos[0].pos_x>=302:
+                flappy.mover_izquierda()
+                print("desplazar")
         band=True
+
+    if tiempo_colision:
+        tiempo_actual = pygame.time.get_ticks()
+        print(tiempo_actual,"  ", tiempo_colision)
+        # Si han pasado 5 segundos (5000 ms) desde la colisión
+        if tiempo_actual - tiempo_colision >= 1000:
+            mostrar_mensaje = True  # Habilita el mensaje
+            tiempo_colision = None  # Resetea el tiempo de colisión
 
     pygame.display.update() #actualiza todo lo que esta en pantalla
 

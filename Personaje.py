@@ -22,18 +22,24 @@ class Personaje(Mostrar_Personaje):
             self.movimientos.pos_y=const.Alto_personaje/2+1
             self.movimientos.aceleracion=0
             self.movimientos.rect.center=(self.movimientos.pos_x,self.movimientos.pos_y)# nueva posicion
+    def mover_izquierda(self):
+        self.movimientos.mover_izquierda()
+    def mover_arriba(self):
+        self.movimientos.mover_arriba()
     
 class Arboles():
 
     def __init__(self, x, y, interfaz, imagen_pj, velocidad,cantidad_obstaculos):
         self.personaje=pygame.sprite.Group()
         self.lista_obstaculos=[]
+        self.longitud=cantidad_obstaculos
         for i in range (cantidad_obstaculos):
             movimientos=Movimiento(x[i], y[i], interfaz, imagen_pj[i], velocidad)
             self.personaje.add(movimientos)
             self.lista_obstaculos.append(movimientos)
 
-    
+    def numero_obstaculos(self):
+        return self.longitud
     def dibujar(self):
         self.personaje.draw(self.lista_obstaculos[0].ventana)#dibuja al pj en la pantalla
     
