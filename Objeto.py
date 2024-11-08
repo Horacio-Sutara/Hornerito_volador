@@ -26,12 +26,22 @@ class Objeto(pygame.sprite.Sprite):
                 if self.indice >= len(self.imagenes):
                     self.indice= 0
             self.image=self.imagenes[self.indice]
+
+            # Redimensiona si cada sprite tiene tamaño diferente
+            self.cambiar_tamaño(self.image.get_width(), self.image.get_height())
+            self.rect.center = [self.pos_x, self.pos_y]
+
     def cambiar_sprites(self, nuevo_imagen_pj):
         """Cambia el conjunto de sprites actuales por uno nuevo."""
         self.imagenes = nuevo_imagen_pj
         self.indice = 0  # Reinicia el índice para comenzar desde el inicio del nuevo conjunto
         self.image = self.imagenes[self.indice]
 
+    def cambiar_tamaño(self, ancho, alto):
+        """Cambia el tamaño del sprite a un ancho y alto específico."""
+        if self.image:
+            self.image = pygame.transform.scale(self.image, (ancho, alto))
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     def posicionar(self,x,y):
         self.rect.center =[x, y]

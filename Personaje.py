@@ -26,6 +26,8 @@ class Personaje(Mostrar_Personaje):
             self.movimientos.rect.center=(self.movimientos.pos_x,self.movimientos.pos_y)# nueva posicion
     def mover_izquierda(self):
         self.movimientos.mover_izquierda()
+    def mover_abajo(self,velocidad=None):
+        self.movimientos.mover_abajo(velocidad)
     def mover_arriba(self,velocidad=None):
         if velocidad is None:
             self.movimientos.mover_arriba()

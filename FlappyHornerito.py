@@ -85,7 +85,7 @@ class Juego():
         self.numero_aleatorio_muro_inferior = 6
         self.no_muro_superior=False
         self.no_muro_inferior=False
-
+        self.desplazar_al_morir=True
 
     def menu(self, pantalla):
         self.fondo_sonido.reproducir()
@@ -128,7 +128,7 @@ class Juego():
         self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
         self.flappy.originales_sprites()
         self.una_vez=True
-
+        self.desplazar_al_morir=True
         while self.game:
             self.fondo_sonido.reproducir()
             self.reloj.tick(const.fps)
@@ -152,7 +152,11 @@ class Juego():
                 if self.una_vez:
                     self.flappy.cambiar_sprites(const.imagenes_Hornero_colision)
                     self.una_vez=False
-                self.flappy.actualizar_sprite(45)
+                if  self.flappy.movimientos.indice!=2:
+                    self.flappy.actualizar_sprite(40)
+                elif self.flappy.movimientos.indice==2 and self.desplazar_al_morir:
+                    self.desplazar_al_morir=False
+                    self.flappy.mover_abajo(10)
             self.bloque.dibujar()
             self.puntaje.dibujar(self.pantalla)
             
@@ -191,11 +195,13 @@ class Juego():
                     if self.bloque.lista_obstaculos[self.numero_aleatorio_muro_superior].pos_x>=291:
                         self.flappy.mover_izquierda()
                         print("desplazar")
+                    else:
+                        self.flappy.mover_abajo(10)
                 self.band=True
             if self.tiempo_colision:
                 self.tiempo_actual = pygame.time.get_ticks()
                 # Si han pasado 5 segundos (5000 ms) desde la colisión
-                if self.tiempo_actual - self.tiempo_colision >= 1200:
+                if self.tiempo_actual - self.tiempo_colision >= 1600:
                     self.game=False
                     self.tiempo_colision = None  # Resetea el tiempo de colisión
 
