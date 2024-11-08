@@ -58,6 +58,8 @@ class Juego():
         self.reloj = pygame.time.Clock()
         self.fondo_sonido=Sonido.Sonido(fondo_sonido)
         self.flappy= Personaje(const.Posicion_x,const.Posicion_y,self.pantalla,const.imagenes_Hornero,const.Velocidad_personaje,const.Velocidad_personaje,const.gravedad)
+        self.una_vez=True
+        
         self.bloque=Arboles(
             [const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10],
             [210,180,150,120,90,60,30,0,const.ancho_pantalla-210,const.ancho_pantalla-180,const.ancho_pantalla-150,const.ancho_pantalla-120,const.ancho_pantalla-90,const.ancho_pantalla-60,const.ancho_pantalla-30,const.ancho_pantalla],self.pantalla,
@@ -125,6 +127,7 @@ class Juego():
         self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
         self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
         self.flappy.originales_sprites()
+        self.una_vez=True
 
         while self.game:
             self.fondo_sonido.reproducir()
@@ -145,7 +148,10 @@ class Juego():
                     self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
                     self.flappy.actualizar_sprite()
             else:
-                self.flappy.actualizar_sprite(40)
+                if self.una_vez:
+                    self.flappy.cambiar_sprites(const.imagenes_Hornero_colision)
+                    self.una_vez=False
+                self.flappy.actualizar_sprite(45)
             self.bloque.dibujar()
             self.puntaje.dibujar(self.pantalla)
             
@@ -167,7 +173,6 @@ class Juego():
 
             if pygame.sprite.spritecollide(self.flappy.movimientos, self.bloque.personaje, False):
                 self.muerte_sonido.reproducir()
-                self.flappy.cambiar_sprites(const.imagenes_Hornero_colision)
                 print("¡Colisión detectada con el obstáculo! ", self.flappy.movimientos.pos_x," ",self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x)
                 self.tiempo_colision=pygame.time.get_ticks()
                 self.flappy.movimientos.aceleracion=0
