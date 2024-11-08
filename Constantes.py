@@ -45,7 +45,7 @@ retry_imagen_ampliacion="Volver-a-jugar1.png"
 ir_menu_imagen="Volver-al-menu.png"
 ir_menu_imagen_ampliacion="Volver-al-menu1.png"
 
-
+imagen_arbol_ultra_superior=[pygame.image.load("ultra-arriba.png")]
 imagen_arbol_mega_superior=[pygame.image.load("mega-arriba.png")]
 imagen_arbol_super_superior=[pygame.image.load("super-arriba.png")]
 imagen_arbol_alto_superior=[pygame.image.load("alto-arriba.png")]
@@ -54,6 +54,7 @@ imagen_arbol_bajo_superior=[pygame.image.load("bajo-arriba.png")]
 imagen_arbol_chato_superior=[pygame.image.load("chato-arriba.png")]
 imagen_arbol_piso_superior=[pygame.image.load("piso-arriba.png")]
 
+imagen_arbol_ultra_inferior=[pygame.image.load("ultra-abajo.png")]
 imagen_arbol_mega_inferior=[pygame.image.load("mega-abajo.png")]
 imagen_arbol_super_inferior=[pygame.image.load("super-abajo.png")]
 imagen_arbol_alto_inferior=[pygame.image.load("alto-abajo.png")]

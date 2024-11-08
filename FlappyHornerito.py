@@ -25,6 +25,8 @@ class Menu():
         self.imagen_boton_hover= pygame.image.load(imagen_boton2[1]).convert_alpha()
         self.boton_salir=obj.Boton(220, 350, self.imagen_boton_normal, self.imagen_boton_hover)
 
+        self.boton_sonido=Sonido.Sonido(const.boton_sonido)
+
     def mostrar(self):
         self.inicio=True
         while self.inicio:
@@ -34,9 +36,11 @@ class Menu():
                     pygame.quit()
                     sys.exit()
                 if self.boton_inicio.es_click(evento):
+                    self.boton_sonido.reproducir()
                     self.inicio=False
                     self.ejecutar=True
                 if self.boton_salir.es_click(evento):
+                    self.boton_sonido.reproducir()
                     self.inicio=False
                     self.ejecutar=False
                     self.salir=True
@@ -55,15 +59,18 @@ class Juego():
         self.fondo_sonido=Sonido.Sonido(fondo_sonido)
         self.flappy= Personaje(const.Posicion_x,const.Posicion_y,self.pantalla,const.imagenes_Hornero,const.Velocidad_personaje,const.Velocidad_personaje,const.gravedad)
         self.bloque=Arboles(
-            [const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10],
-            [150,120,90,60,const.ancho_pantalla-150,const.ancho_pantalla-120,const.ancho_pantalla-90,const.ancho_pantalla-60],self.pantalla,
-            [const.imagen_arbol_super_superior,const.imagen_arbol_alto_superior,const.imagen_arbol_medio_superior,const.imagen_arbol_bajo_superior,const.imagen_arbol_super_inferior,const.imagen_arbol_alto_inferior,const.imagen_arbol_medio_inferior,const.imagen_arbol_bajo_inferior],
-            const.Velocidad_personaje/2,8)
+            [const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10,const.largo_pantalla-10],
+            [210,180,150,120,90,60,30,0,const.ancho_pantalla-210,const.ancho_pantalla-180,const.ancho_pantalla-150,const.ancho_pantalla-120,const.ancho_pantalla-90,const.ancho_pantalla-60,const.ancho_pantalla-30,const.ancho_pantalla],self.pantalla,
+            [const.imagen_arbol_ultra_superior,const.imagen_arbol_mega_superior,const.imagen_arbol_super_superior,const.imagen_arbol_alto_superior,const.imagen_arbol_medio_superior,const.imagen_arbol_bajo_superior,const.imagen_arbol_chato_superior,const.imagen_arbol_piso_superior,
+             const.imagen_arbol_ultra_inferior,const.imagen_arbol_mega_inferior,const.imagen_arbol_super_inferior,const.imagen_arbol_alto_inferior,const.imagen_arbol_medio_inferior,const.imagen_arbol_bajo_inferior,const.imagen_arbol_chato_inferior,const.imagen_arbol_piso_inferior],
+            const.Velocidad_personaje/2,16)
         self.band=False        
         self.fondo_sonido.reproducir()
 
         self.puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
         self.puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
+
+        self.muerte_sonido=Sonido.Sonido(const.muerte_sonido)
 
         self.caer=True
         self.tiempo_colision=None
@@ -89,14 +96,22 @@ class Juego():
     def generar_numero(self):
         self.no_muro_superior=False
         self.no_muro_inferior=False
-        self.numero_aleatorio_muro_superior=random.randint(0, 3)
+        self.numero_aleatorio_muro_superior=random.randint(0, 6)
 
         if self.numero_aleatorio_muro_superior==0:
-            self.numero_aleatorio_muro_inferior=random.randint(6, 7)
+            self.numero_aleatorio_muro_inferior=random.randint(14, 15)
         elif self.numero_aleatorio_muro_superior==1:
-            self.numero_aleatorio_muro_inferior=random.randint(5, 7)
+            self.numero_aleatorio_muro_inferior=random.randint(13, 14)
+        elif self.numero_aleatorio_muro_superior==2:
+            self.numero_aleatorio_muro_inferior=random.randint(12, 13)
+        elif self.numero_aleatorio_muro_superior==3:
+            self.numero_aleatorio_muro_inferior=random.randint(11, 12)
+        elif self.numero_aleatorio_muro_superior==4:
+            self.numero_aleatorio_muro_inferior=random.randint(10, 11)
+        elif self.numero_aleatorio_muro_superior==5:
+            self.numero_aleatorio_muro_inferior=random.randint(9, 10)
         else:
-            self.numero_aleatorio_muro_inferior=random.randint(4, 7)
+            self.numero_aleatorio_muro_inferior=random.randint(8, 9)
 
             
     def jugar(self):
@@ -148,6 +163,7 @@ class Juego():
                 self.puntaje_sonido.reproducir()
 
             if pygame.sprite.spritecollide(self.flappy.movimientos, self.bloque.personaje, False):
+                self.muerte_sonido.reproducir()
                 print("¡Colisión detectada con el obstáculo! ", self.flappy.movimientos.pos_x," ",self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x)
                 self.tiempo_colision=pygame.time.get_ticks()
                 self.flappy.movimientos.aceleracion=0
@@ -169,7 +185,7 @@ class Juego():
             if self.tiempo_colision:
                 self.tiempo_actual = pygame.time.get_ticks()
                 # Si han pasado 5 segundos (5000 ms) desde la colisión
-                if self.tiempo_actual - self.tiempo_colision >= 1000:
+                if self.tiempo_actual - self.tiempo_colision >= 1200:
                     self.game=False
                     self.tiempo_colision = None  # Resetea el tiempo de colisión
 
@@ -201,4 +217,3 @@ class Juego():
 
 menu=Juego()
 menu.ejecutar()
-
