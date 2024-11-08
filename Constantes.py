@@ -64,7 +64,7 @@ imagen_arbol_chato_inferior=[pygame.image.load("chato-abajo.png")]
 imagen_arbol_piso_inferior=[pygame.image.load("piso-abajo.png")]
 
 imagenes_Hornero=[]
-imagenes_Hornero_colision=[pygame.image.load("Hornerito-muerto1.png"),pygame.image.load("Hornerito-muerto2.png")]
+imagenes_Hornero_colision=[pygame.image.load("Hornerito-muerto1.png"),pygame.image.load("Hornerito-muerto2.png"),pygame.image.load("Hornerito-muerto3.png")]
 for auxiliar in range (1,5):
             img = pygame.image.load(f"horneritoSprite{auxiliar}.png")
             imagenes_Hornero.append(img)

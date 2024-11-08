@@ -7,12 +7,12 @@ class Objeto(pygame.sprite.Sprite):
         self.pos_x=x #posicion de inicio en x
         self.pos_y=y #posicion de inicio en y
 
-
+        self.imagenes=imagen_pj
         pygame.sprite.Sprite. __init__ (self)
         self.indice =0
         self.contador =0
 
-        self.image= imagen_pj[self.indice]
+        self.image= self.imagenes[self.indice]
         self.rect= self.image.get_rect ()
         self.rect.center =[x, y]
 
@@ -23,9 +23,15 @@ class Objeto(pygame.sprite.Sprite):
             if self.contador > cooldown:
                 self.contador=0
                 self.indice+=1
-                if self.indice >= len(const.imagenes_Hornero):
+                if self.indice >= len(self.imagenes):
                     self.indice= 0
-            self.image=const.imagenes_Hornero[self.indice]
+            self.image=self.imagenes[self.indice]
+    def cambiar_sprites(self, nuevo_imagen_pj):
+        """Cambia el conjunto de sprites actuales por uno nuevo."""
+        self.imagenes = nuevo_imagen_pj
+        self.indice = 0  # Reinicia el índice para comenzar desde el inicio del nuevo conjunto
+        self.image = self.imagenes[self.indice]
+
 
     def posicionar(self,x,y):
         self.rect.center =[x, y]
@@ -89,12 +95,21 @@ class Mostrar_Personaje():
         self.movimientos=Gravedad(x, y, interfaz, imagen_pj, velocidad, impulso, gravedad)
         self.personaje=pygame.sprite.Group()
         self.personaje.add(self.movimientos)
+        self.originales=self.movimientos.imagenes
     
     def dibujar(self):
         self.personaje.draw(self.movimientos.ventana)#dibuja al pj en la pantalla
     
-    def actualizar_sprite(self):
-        self.personaje.update()# cambia el sprite
+    def actualizar_sprite(self,cooldown=None):
+        if cooldown is None:
+            self.personaje.update()# cambia el sprite
+        else:
+            self.personaje.update(cooldown)
+    def originales_sprites(self):
+        self.movimientos.cambiar_sprites(self.originales)
+
+    def cambiar_sprites(self,nuevos_sprites):
+        self.movimientos.cambiar_sprites(nuevos_sprites)
 class Boton:
     def __init__(self, x, y, imagen_normal, imagen_hover):
         # Carga las imágenes para el estado normal y el estado "hover"

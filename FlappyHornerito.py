@@ -124,6 +124,7 @@ class Juego():
         self.flappy.movimientos.aceleracion=0
         self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
         self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
+        self.flappy.originales_sprites()
 
         while self.game:
             self.fondo_sonido.reproducir()
@@ -131,7 +132,6 @@ class Juego():
             self.pantalla.blit(self.fondo,(0,0))
 
             self.flappy.dibujar()
-            self.flappy.actualizar_sprite()
 
             if self.caer:
                 self.flappy.caer()
@@ -143,6 +143,9 @@ class Juego():
                     self.generar_numero()
                     self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
                     self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
+                    self.flappy.actualizar_sprite()
+            else:
+                self.flappy.actualizar_sprite(40)
             self.bloque.dibujar()
             self.puntaje.dibujar(self.pantalla)
             
@@ -164,6 +167,7 @@ class Juego():
 
             if pygame.sprite.spritecollide(self.flappy.movimientos, self.bloque.personaje, False):
                 self.muerte_sonido.reproducir()
+                self.flappy.cambiar_sprites(const.imagenes_Hornero_colision)
                 print("¡Colisión detectada con el obstáculo! ", self.flappy.movimientos.pos_x," ",self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x)
                 self.tiempo_colision=pygame.time.get_ticks()
                 self.flappy.movimientos.aceleracion=0
