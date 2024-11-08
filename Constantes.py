@@ -34,6 +34,15 @@ salir_imagen="boton-salir.png"
 salir_imagen_ampliacion="boton-salir1.png"
 
 fondo_imagen='bg.png'
+fondo_perder="fondo-muerte.png"
+
+retry_imagen="Volver-a-jugar.png"
+retry_imagen_ampliacion="Volver-a-jugar1.png"
+
+ir_menu_imagen="Volver-al-menu.png"
+ir_menu_imagen_ampliacion="Volver-al-menu1.png"
+
+
 imagen_arbol_alto_superior=[pygame.image.load("alto-arriba.png")]
 imagen_arbol_medio_superior=[pygame.image.load("medio-arriba.png")]
 imagen_arbol_bajo_superior=[pygame.image.load("bajo-arriba.png")]
