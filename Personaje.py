@@ -5,6 +5,8 @@ from Objeto import Movimiento
 class Personaje(Mostrar_Personaje):
     def __init__(self, x, y, interfaz, imagen_pj, velocidad, impulso, gravedad):
         super().__init__(x, y, interfaz, imagen_pj, velocidad, impulso, gravedad)
+        self.pos_inicial_x=x
+        self.pos_inicial_y=y
 
     def salto(self):
         self.movimientos.salto() 
@@ -26,6 +28,10 @@ class Personaje(Mostrar_Personaje):
         self.movimientos.mover_izquierda()
     def mover_arriba(self):
         self.movimientos.mover_arriba()
+    def reestablecer(self):
+        self.movimientos.pos_x=self.pos_inicial_x
+        self.movimientos.pos_y=self.pos_inicial_y
+        self.movimientos.posicionar(self.pos_inicial_x,self.pos_inicial_y)
     
 class Arboles():
 
@@ -51,3 +57,7 @@ class Arboles():
         if -const.Ancho_personaje*2>self.lista_obstaculos[obstaculo].pos_x:
             self.lista_obstaculos[obstaculo].pos_x=self.lista_obstaculos[obstaculo].largo_ventana+100
         self.lista_obstaculos[obstaculo].rect.center=(self.lista_obstaculos[obstaculo].pos_x,self.lista_obstaculos[obstaculo].pos_y)
+    def reestablecer_posicion(self):
+        for i in range(self.longitud):
+            self.lista_obstaculos[i].pos_x=self.lista_obstaculos[i].largo_ventana+100
+            self.lista_obstaculos[i].rect.center=(self.lista_obstaculos[i].pos_x,self.lista_obstaculos[i].pos_y)

@@ -27,6 +27,9 @@ class Objeto(pygame.sprite.Sprite):
                     self.indice= 0
             self.image=const.imagenes_Hornero[self.indice]
 
+    def posicionar(self,x,y):
+        self.rect.center =[x, y]
+
 class Movimiento(Objeto):
     def __init__(self, x, y,interfaz,imagen_pj,velocidad):
 
