@@ -139,6 +139,7 @@ class Juego():
             if self.caer:
                 self.flappy.caer()
             if self.band==False:
+                self.flappy.actualizar_sprite()
                 self.bloque.desplazar(self.numero_aleatorio_muro_inferior)
                 if self.bloque.desplazar(self.numero_aleatorio_muro_superior):
                     self.bloque.desactivar_obstaculo(self.numero_aleatorio_muro_superior)
@@ -146,7 +147,7 @@ class Juego():
                     self.generar_numero()
                     self.bloque.activar_obstaculo(self.numero_aleatorio_muro_superior)
                     self.bloque.activar_obstaculo(self.numero_aleatorio_muro_inferior)
-                    self.flappy.actualizar_sprite()
+                
             else:
                 if self.una_vez:
                     self.flappy.cambiar_sprites(const.imagenes_Hornero_colision)
