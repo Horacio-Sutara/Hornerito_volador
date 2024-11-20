@@ -73,6 +73,7 @@ class Juego():
         self.puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 
         self.muerte_sonido=Sonido.Sonido(const.muerte_sonido)
+        self.muerte_sonido.ajustar_volumen(0.5)
 
         self.caer=True
         self.tiempo_colision=None
@@ -82,7 +83,7 @@ class Juego():
         self.cerrar=False
 
         self.numero_aleatorio_muro_superior = 0
-        self.numero_aleatorio_muro_inferior = 6
+        self.numero_aleatorio_muro_inferior = 8
         self.no_muro_superior=False
         self.no_muro_inferior=False
         self.desplazar_al_morir=True
@@ -174,7 +175,6 @@ class Juego():
             if (const.Posicion_x-const.Ancho_personaje/2-5<self.bloque.lista_obstaculos[self.numero_aleatorio_muro_inferior].pos_x+100<const.Posicion_x-const.Ancho_personaje/2):
                 self.puntaje_sonido.reproducir()
                 self.puntaje.aumentar()
-                self.puntaje_sonido.reproducir()
 
             if pygame.sprite.spritecollide(self.flappy.movimientos, self.bloque.personaje, False):
                 self.muerte_sonido.reproducir()
