@@ -26,7 +26,7 @@ class Menu():
         self.boton_salir=obj.Boton(220, 350, self.imagen_boton_normal, self.imagen_boton_hover)
 
         self.boton_sonido=Sonido.Sonido(const.boton_sonido)
-
+        self.boton_sonido.ajustar_volumen(0.2)
     def mostrar(self):
         self.inicio=True
         while self.inicio:
@@ -68,12 +68,13 @@ class Juego():
             const.Velocidad_personaje/2,16)
         self.band=False        
         self.fondo_sonido.reproducir()
-
+        self.fondo_sonido.ajustar_volumen(0.2)
         self.puntaje_sonido=Sonido.Sonido(const.puntaje_sonido)
+        self.puntaje_sonido.ajustar_volumen(0.15)
         self.puntaje=Puntaje.Puntaje(posicion=(const.ancho_pantalla-150,10))
 
         self.muerte_sonido=Sonido.Sonido(const.muerte_sonido)
-        self.muerte_sonido.ajustar_volumen(0.5)
+        self.muerte_sonido.ajustar_volumen(0.21)
 
         self.caer=True
         self.tiempo_colision=None
@@ -97,24 +98,25 @@ class Juego():
         self.cerrar=menu.salir
 
     def generar_numero(self):
-        self.no_muro_superior=False
-        self.no_muro_inferior=False
-        self.numero_aleatorio_muro_superior=random.randint(0, 6)
+        """Genera números aleatorios para posicionar obstáculos con lógica mejorada"""
+        self.no_muro_superior = False
+        self.no_muro_inferior = False
+        
+        # Crear un mapeo de rangos superiores a inferiores
+        RANGOS_MURO = {
+            0: (14, 15),
+            1: (13, 14),
+            2: (12, 13),
+            3: (11, 12),
+            4: (10, 11),
+            5: (9, 10),
+            6: (8, 9)
+        }
+        
+        self.numero_aleatorio_muro_superior = random.randint(0, 6)
+        rango_inferior = RANGOS_MURO[self.numero_aleatorio_muro_superior]
+        self.numero_aleatorio_muro_inferior = random.randint(*rango_inferior)
 
-        if self.numero_aleatorio_muro_superior==0:
-            self.numero_aleatorio_muro_inferior=random.randint(14, 15)
-        elif self.numero_aleatorio_muro_superior==1:
-            self.numero_aleatorio_muro_inferior=random.randint(13, 14)
-        elif self.numero_aleatorio_muro_superior==2:
-            self.numero_aleatorio_muro_inferior=random.randint(12, 13)
-        elif self.numero_aleatorio_muro_superior==3:
-            self.numero_aleatorio_muro_inferior=random.randint(11, 12)
-        elif self.numero_aleatorio_muro_superior==4:
-            self.numero_aleatorio_muro_inferior=random.randint(10, 11)
-        elif self.numero_aleatorio_muro_superior==5:
-            self.numero_aleatorio_muro_inferior=random.randint(9, 10)
-        else:
-            self.numero_aleatorio_muro_inferior=random.randint(8, 9)
 
             
     def jugar(self):
@@ -230,6 +232,11 @@ class Juego():
 
 
 
-
-menu=Juego()
-menu.ejecutar()
+if __name__ == "__main__":
+    try:
+        juego = Juego()
+        juego.ejecutar()
+    except Exception as e:
+        print(f"Error fatal: {e}")
+        pygame.quit()
+        sys.exit(1)
